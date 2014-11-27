@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class Parse {
 
 	public static void main(String[] args) throws FileNotFoundException {
+		long start = System.currentTimeMillis();
 		File f = new File("imdb-r.txt");
 		BufferedReader br = new BufferedReader(new FileReader(f));
 		Scanner scan = null;
@@ -25,40 +26,41 @@ public class Parse {
 				if (o1 instanceof Actor) {
 					Actor a1 = (Actor) o1;
 					Actor a2 = (Actor) o2;
-					System.out.println(a1.getId() + " " + a1.getfName() + " "
-							+ a1.getlName());
-					System.out.println(a2.getId() + " " + a2.getfName() + " "
-							+ a2.getlName());
+//					System.out.println(a1.getId() + " " + a1.getfName() + " "
+//							+ a1.getlName());
+//					System.out.println(a2.getId() + " " + a2.getfName() + " "
+//							+ a2.getlName());
 				} else if (o1 instanceof Director) {
 					Director d1 = (Director) o1;
 					Director d2 = (Director) o2;
-					System.out.println(d1.getId() + " " + d1.getfName() + " "
-							+ d1.getlName());
-					System.out.println(d2.getId() + " " + d2.getfName() + " "
-							+ d2.getlName());
+//					System.out.println(d1.getId() + " " + d1.getfName() + " "
+//							+ d1.getlName());
+//					System.out.println(d2.getId() + " " + d2.getfName() + " "
+//							+ d2.getlName());
 				} else if (o1 instanceof DirectorGenre) {
 					DirectorGenre d1 = (DirectorGenre) o1;
 					DirectorGenre d2 = (DirectorGenre) o2;
-					System.out.println(d1.getId() + " " + d1.getGenre() + " "
-							+ d1.getRating());
-					System.out.println(d2.getId() + " " + d2.getGenre() + " "
-							+ d2.getRating());
+//					System.out.println(d1.getId() + " " + d1.getGenre() + " "
+//							+ d1.getRating());
+//					System.out.println(d2.getId() + " " + d2.getGenre() + " "
+//							+ d2.getRating());
 				} else if (o1 instanceof Movie) {
 					Movie d1 = (Movie) o1;
 					Movie d2 = (Movie) o2;
-					System.out.println(d1.getId() + " " + d1.getTitle() + " "
-							+ d1.getRating());
-					System.out.println(d2.getId() + " " + d2.getTitle() + " "
-							+ d2.getRating());
+//					System.out.println(d1.getId() + " " + d1.getTitle() + " "
+//							+ d1.getRating());
+//					System.out.println(d2.getId() + " " + d2.getTitle() + " "
+//							+ d2.getRating());
 				}
 			}
-			for (ArrayList<IMDBobject> arr : l) {
-				if (arr != null)
-					System.out.println(((Name) arr.get(0)).getName());
-			}
+//			for (ArrayList<IMDBobject> arr : l) {
+//				if (arr != null)
+//					System.out.println(((Name) arr.get(0)).getName());
+//			}
 			// for (String str : l) {
 			// System.out.println(str);
 			// }
+			System.out.println(" Run time of parsing: "+(System.currentTimeMillis()-start)/1000+" sec");
 		} finally {
 			scan.close();
 		}
@@ -112,8 +114,8 @@ public class Parse {
 							temp = temp.substring(i4).trim() + " "
 													+ temp.substring(0, i4).trim();
 							line = line.substring(0, i1) + temp + line.substring(i2);
-							System.out.println(rawline);
-							System.out.println(line);
+//							System.out.println(rawline);
+//							System.out.println(line);
 						}
 					}
 				}
@@ -148,7 +150,7 @@ public class Parse {
 								Integer.parseInt(s[4]));
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
-						System.out.println(rawline);
+//						System.out.println(rawline);
 					}
 					data.add(m);
 					break;
