@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 
 public class MatrixExample {
 
@@ -15,8 +17,10 @@ public class MatrixExample {
 						{1/3d, 0, 1/3d, 0},
 						{1/3d, 1/2d, 0, 1},
 						{0, 0, 1/3d, 0}};
-		double[] v0 = {1/4d,1/4d,1/4d,1/4d};
+//		double[] v0 = {1/4d,1/4d,1/4d,1/4d};
+		double[] v0 = {0, 0, 0, 0};
 		double[] E = {1, 0, 0, 0};
+//		double[] E = {1/4d, 1/4d, 1/4d, 1/4d};
 		double d = 0.5d;
 
 		double[] vs0 = {1, 0, 0, 0};
@@ -35,7 +39,7 @@ public class MatrixExample {
 					multiplyVectorByNumber(E, (1-d)));
 			printIteration(v0, i);
 		}
-		printVector(v0);
+		printVector(normalizeVector(v0));
 		
 //		printMatrix(M);
 	}
@@ -102,6 +106,17 @@ public class MatrixExample {
 			System.out.println(names[i]+" "+result[i]);
 		}
 		System.out.println("Sum "+sum);
+	}
+
+	private static double[] normalizeVector(double[] v){
+		double[] v1 = v.clone();
+		double[] r = new double[v.length];
+		Arrays.sort(v1);
+		double maxValue = v1[v.length-1];
+		for (int i = 0; i < r.length; i++) {
+			r[i] = v[i]/maxValue;
+		}
+		return r;
 	}
 
 }
