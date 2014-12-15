@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 
 public class Movie extends IMDBobject{
 	private final int id;
@@ -5,6 +7,7 @@ public class Movie extends IMDBobject{
 	private final int year;
 	private final double rating;
 	private final int something;
+	private ArrayList<Integer> cast = new ArrayList<>();
 	
 	public Movie(int id, String title, int year, double rating, int something){
 		this.id = id;
@@ -14,6 +17,14 @@ public class Movie extends IMDBobject{
 		this.something = something;
 	}
 
+	public void addActor(int id){
+		cast.add(id);
+	}
+	
+	public ArrayList<Integer> getCast(){
+		return cast;
+	}
+	
 	public int getId() {
 		return id;
 	}

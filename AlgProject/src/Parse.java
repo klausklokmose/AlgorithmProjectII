@@ -4,72 +4,86 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
 public class Parse {
 
-	public static void main(String[] args) throws FileNotFoundException {
+	private static ArrayList<ArrayList<IMDBobject>> l = new ArrayList<>();
+	
+	
+	public static void main(String[] args) throws FileNotFoundException, InterruptedException, BrokenBarrierException {
 		long start = System.currentTimeMillis();
 		File f = new File("imdb-r.txt");
 		BufferedReader br = new BufferedReader(new FileReader(f));
 		Scanner scan = null;
 		try {
 			scan = new Scanner(br);
-			ArrayList<ArrayList<IMDBobject>> l = new ArrayList<>();
 
-			populateArray(scan, l);
-
-			for (int i = 0; i < 3; i++) {
-				ArrayList<IMDBobject> imdb = l.get(i);
-				IMDBobject o1 = imdb.get(1);
-				IMDBobject o2 = imdb.get(2);
-
-				if (o1 instanceof Actor) {
-					Actor a1 = (Actor) o1;
-					Actor a2 = (Actor) o2;
-//					System.out.println(a1.getId() + " " + a1.getfName() + " "
-//							+ a1.getlName());
-//					System.out.println(a2.getId() + " " + a2.getfName() + " "
-//							+ a2.getlName());
-				} else if (o1 instanceof Director) {
-					Director d1 = (Director) o1;
-					Director d2 = (Director) o2;
-//					System.out.println(d1.getId() + " " + d1.getfName() + " "
-//							+ d1.getlName());
-//					System.out.println(d2.getId() + " " + d2.getfName() + " "
-//							+ d2.getlName());
-				} else if (o1 instanceof DirectorGenre) {
-					DirectorGenre d1 = (DirectorGenre) o1;
-					DirectorGenre d2 = (DirectorGenre) o2;
-//					System.out.println(d1.getId() + " " + d1.getGenre() + " "
-//							+ d1.getRating());
-//					System.out.println(d2.getId() + " " + d2.getGenre() + " "
-//							+ d2.getRating());
-				} else if (o1 instanceof Movie) {
-					Movie d1 = (Movie) o1;
-					Movie d2 = (Movie) o2;
-//					System.out.println(d1.getId() + " " + d1.getTitle() + " "
-//							+ d1.getRating());
-//					System.out.println(d2.getId() + " " + d2.getTitle() + " "
-//							+ d2.getRating());
+			populateArray(scan);
+			
+			System.out.println(" Run time of parsing: "+(System.currentTimeMillis()-start)/1000+" sec");
+			for (int i = 0; i < l.size(); i++) {
+				System.out.println(l.get(i).size()); 
+			}
+			
+			ArrayList<Movie> movies = new ArrayList<>();
+			CyclicBarrier barrier = new CyclicBarrier(4);
+			
+			//find the movies we want to look at
+			for (int i = 1; i < l.get(3).size(); i++) {
+//				if(barrier.getNumberWaiting()==1){
+//					break;
+//				}
+				switch (((Movie) l.get(3).get(i)).getId()){
+					case 18979:
+						movies.add((Movie) l.get(3).get(i));  //apollo 13
+						barrier.await();
+						System.out.println("Added movie: "+18979);
+					break;
+					case 117874:
+						movies.add((Movie) l.get(3).get(i)); //forest gump
+						barrier.await();
+						System.out.println("Added movie: "+117874);
+					break;
+					case 134077:
+						movies.add((Movie) l.get(3).get(i)); //the green mile
+						barrier.await();
+						System.out.println("Added movie: "+134077);
+					break;
+						
 				}
 			}
-//			for (ArrayList<IMDBobject> arr : l) {
-//				if (arr != null)
-//					System.out.println(((Name) arr.get(0)).getName());
-//			}
-			// for (String str : l) {
-			// System.out.println(str);
-			// }
-			System.out.println(" Run time of parsing: "+(System.currentTimeMillis()-start)/1000+" sec");
-			System.out.println(l.get(0).size());
+			//add actors to the movies
+			for (int i = 0; i < l.get(6).size(); i++) {
+				Role r = (Role) l.get(6).get(i);
+				for (int j = 0; j < movies.size(); j++) {
+					if(r.getMovieID() == movies.get(j).getId()){
+						movies.get(j).addActor(r.getActorID());
+						System.out.println("added actor: "+r.getActorID());
+					}
+				}
+			}
+			
+			//print cast of movies
+			for (int i = 0; i < movies.size(); i++) {
+				System.out.println("MOVIE: "+movies.get(i).getTitle()+" -------------------------------------");
+				for (int j = 0; j < movies.get(i).getCast().size(); j++) {
+					System.out.println(movies.get(i).getCast().get(j));
+				}
+			}
+			
+			
+			
+			
+			
 		} finally {
 			scan.close();
 		}
 
 	}
 
-	private static void populateArray(Scanner scan,
-			ArrayList<ArrayList<IMDBobject>> l) {
+	private static void populateArray(Scanner scan) {
 		String line;
 		ArrayList<IMDBobject> data = null;
 		String workingSet = null;
@@ -84,8 +98,8 @@ public class Parse {
 				}
 				data = new ArrayList<>();
 				line = line.split(" ")[2].replaceAll("`", "");
-				IMDBobject o = new Name(line);
-				data.add(o);
+//				IMDBobject o = new Name(line);
+//				data.add(o);
 				workingSet = line;
 			} else {
 				// adds the data from the list to the array
@@ -93,6 +107,7 @@ public class Parse {
 				// "3,'$1,000 Reward',1913,NULL,141"
 
 				String rawline = line;
+				
 				line = line.replaceAll("[[\\\\]]'", "");
 				int i1 = line.indexOf("'");
 				int i2 = line.indexOf("'", i1 + 1);
@@ -123,22 +138,22 @@ public class Parse {
 				line = line.replaceAll("'", "");
 				String[] s = line.split(",");
 				switch (workingSet) {
-				case "actors":
-					Actor actor = new Actor(Integer.parseInt(s[0]), s[1], s[2],
-							s[3].charAt(0), Integer.parseInt(s[4]));
-					data.add(actor);
-					break;
-				case "directors":
-					Director d = new Director(Integer.parseInt(s[0]), s[1],
-							s[2]);
-					data.add(d);
-					break;
-				case "directors_genres":
-					DirectorGenre dg = new DirectorGenre(
-							Integer.parseInt(s[0]), s[1],
-							Double.parseDouble(s[2]));
-					data.add(dg);
-					break;
+//				case "actors":
+//					Actor actor = new Actor(Integer.parseInt(s[0]), s[1], s[2],
+//							s[3].charAt(0), Integer.parseInt(s[4]));
+//					data.add(actor);
+//					break;
+//				case "directors":
+//					Director d = new Director(Integer.parseInt(s[0]), s[1],
+//							s[2]);
+//					data.add(d);
+//					break;
+//				case "directors_genres":
+//					DirectorGenre dg = new DirectorGenre(
+//							Integer.parseInt(s[0]), s[1],
+//							Double.parseDouble(s[2]));
+//					data.add(dg);
+//					break;
 				case "movies":
 					if (s[3].equals("NULL")) {
 						s[3] = "-1";
@@ -161,12 +176,21 @@ public class Parse {
 				// case "movie_genres":
 				//
 				// break;
-				// case "roles":
+				 case "roles":
 				// //movieID, ActorID, role
-				// break;
-				// default:
-				// System.out.println("ERROR");
-				// break;
+					Role r = null;
+					try {
+						r = new Role(Integer.parseInt(s[0]), Integer.parseInt(s[1]));
+					} catch (NumberFormatException e) {
+						System.out.println("ROLE ERROR");
+//						e.printStackTrace();
+					}
+//					System.out.println(r.getMovieID());
+					data.add(r);
+					break;
+//				 default:
+//				 System.out.println("ERROR");
+//				 break;
 				}
 			}
 		}
