@@ -39,11 +39,11 @@ public class Actor extends IMDBobject{
 	public Actor(int id, ArrayList<Integer> actors){
 		this.id = id;
 		this.actors = actors;
-		for (int i = 0; i < actors.size(); i++) {
-			if(actors.get(i)==id){
-				actors.remove(i);
-			}
-		}
+//		for (int i = 0; i < actors.size(); i++) {
+//			if(actors.get(i)==id){
+//				actors.remove(i);
+//			}
+//		}
 	}
 	
 	public Actor(int id, String lName, String fName, char gender, int numMovies){

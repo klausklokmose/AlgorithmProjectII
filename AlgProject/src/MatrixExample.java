@@ -8,7 +8,7 @@ public class MatrixExample {
 	static int iterations = 1000;
 	
 	public static void main(String[] args) {
-
+		
 		double[][] M = {{0, 1/2d, 1/3d, 0},
 						{1/2d, 0, 1/3d, 0},
 						{1/2d, 1/2d, 0, 1},

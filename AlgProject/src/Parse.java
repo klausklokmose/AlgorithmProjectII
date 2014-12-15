@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
@@ -56,7 +57,6 @@ public class Parse {
 			}
 			
 			//TODO union actors list
-			//sets.union
 			
 			double[][] M = new double[actors.size()][actors.size()];
 			for (int j = 0; j < M.length; j++) {
@@ -64,12 +64,16 @@ public class Parse {
 				for (int i = 0; i < M.length; i++) {
 					if(a.getActorsPlayedWith().contains(actors.get(i).getId())){
 						M[j][i] = (double)1/(double)a.getActorsSize();
+						System.out.println("actor "+a.getId()+" has played with "+actors.get(i).getId());
 					}
 				}
 			}
-			
-			
-			
+			for (int i = 0; i < M.length; i++) {
+				for (int j = 0; j < M.length; j++) {
+					System.out.print(M[i][j]+" ");
+				}
+				System.out.println();
+			}
 		} finally {
 			scan.close();
 		}
