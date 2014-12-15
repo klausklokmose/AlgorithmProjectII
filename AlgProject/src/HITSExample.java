@@ -7,7 +7,7 @@ public class HITSExample {
 //	static String[] names = {"M1", "M2", "A", "B", "C"};
 	static boolean printIterations = true;
 	static int iterations = 1000;
-	static double epsilon= 0.0001d;
+	static double epsilon= 0.000000001d;
 	
 	public static void main(String[] args) {
 
@@ -48,31 +48,6 @@ public class HITSExample {
 			System.out.println("Rank: Hub");
 			printIteration(h, count++);
 	    }while (!vectorSmallerThan(delta,epsilon));
-		printVector(normalizeVector(a));
-/**
-		do{
-			System.out.println("-------------------------------------------------------------");
-			double[] ap = multiplyMatrixByVector(Lt, h);
-//			printVector(ap);
-			double[] a1 = scaleVector(ap);
-//			printVector(a1);
-			double[] hp = multiplyMatrixByVector(L, a1);
-//			System.out.println("hp:");
-//			printVector(hp);
-			double[] h1= scaleVector(hp);
-			delta=vectorAbsoluteSubtract(a1, a);
-			a = a1;
-			h = h1;
-			System.out.println("Rank: Authority");
-			printIteration(a, count);
-			System.out.println("Rank: Hub");
-			printIteration(h, count++);
-	    }while (!vectorSmallerThan(delta,epsilon));
-	    
-//		printMatrix(L);
-//		printVector(h);
- * 
- */
 	}
 
 		private static double[] vectorAbsoluteSubtract(double[] v1,
