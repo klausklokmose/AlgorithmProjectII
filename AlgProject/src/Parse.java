@@ -63,8 +63,9 @@ public class Parse {
 				Actor a = actors.get(j);
 				for (int i = 0; i < M.length; i++) {
 					if(a.getActorsPlayedWith().contains(actors.get(i).getId())){
+						
 						M[j][i] = (double)1/(double)a.getActorsSize();
-						System.out.println("actor "+a.getId()+" has played with "+actors.get(i).getId());
+//						System.out.println("actor "+a.getId()+" has played with "+actors.get(i).getId());
 					}
 				}
 			}
