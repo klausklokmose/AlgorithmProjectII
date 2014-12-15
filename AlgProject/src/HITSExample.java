@@ -4,6 +4,7 @@ import java.util.Arrays;
 public class HITSExample {
 
 	static String[] names = {"K", "A", "B", "C"};
+//	static String[] names = {"M1", "M2", "A", "B", "C"};
 	static boolean printIterations = true;
 	static int iterations = 1000;
 	static double epsilon= 0.0001d;
@@ -14,21 +15,31 @@ public class HITSExample {
 						{1, 0, 1, 0},
 						{1, 1, 0, 1},
 						{0, 0, 1, 0}};
+//		double[][] L = {{0, 0, 1, 1, 0},
+//				{0, 0, 0, 1, 1},
+//				{0,0,0,0,0},
+//				{0, 0, 0, 0,0},
+//				{0, 0, 0, 0,0}};
+//		double[][] Lt = transpose(L);
+//		printMatrix(L);
+//		System.out.println();
+//		printMatrix(Lt);
 		double[][] Lt = L.clone(); //because it is symmetric
 		
 		double[] h = {1, 1, 1, 1};
+//		double[] h = {1, 1, 1, 1, 1};
 		double[] a = new double[h.length];
 		double[] delta = {1, 1, 1, 1};
+//		double[] delta = {1, 1, 1, 1, 1};
 		double c = 0.5d;
-		double[] U = {1, 0,0,0};
+		double[] U = {1, 0,0,0}; //bacon
+//		double[] U = {1, 1, 1, 1, 1};
 		double[] cU = multiplyVectorByNumber(U, c);
 		int count = 1;
 		do{
 			System.out.println("-------------------------------------------------------------");
-			double[] ap = vectorAdditon(multiplyVectorByNumber(multiplyMatrixByVector(Lt, h), c), cU);
-			double[] a1 = normalizeVector(ap);
-			double[] hp = vectorAdditon(multiplyVectorByNumber(multiplyMatrixByVector(L, a1), c), cU);
-			double[] h1= normalizeVector(hp);
+			double[] a1 = vectorAdditon(multiplyVectorByNumber(normalizeVector(multiplyMatrixByVector(Lt, h)), c), cU);
+			double[] h1 = vectorAdditon(multiplyVectorByNumber(normalizeVector(multiplyMatrixByVector(L, a1)), c), cU);
 			delta=vectorAbsoluteSubtract(a1, a);
 			a = a1;
 			h = h1;
@@ -37,7 +48,7 @@ public class HITSExample {
 			System.out.println("Rank: Hub");
 			printIteration(h, count++);
 	    }while (!vectorSmallerThan(delta,epsilon));
-		
+		printVector(normalizeVector(a));
 /**
 		do{
 			System.out.println("-------------------------------------------------------------");
@@ -57,6 +68,7 @@ public class HITSExample {
 			System.out.println("Rank: Hub");
 			printIteration(h, count++);
 	    }while (!vectorSmallerThan(delta,epsilon));
+	    
 //		printMatrix(L);
 //		printVector(h);
  * 
@@ -112,7 +124,7 @@ public class HITSExample {
 		return r;
 	}
 	private static double[][] transpose(double[][] L){
-		double[][] Lt= new double[L.length][L.length];
+		double[][] Lt= new double[L[0].length][L.length];
 		
 		for(int i=0; i<L.length; i++)
 		{
@@ -173,7 +185,7 @@ public class HITSExample {
 	private static void printMatrix(double[][] M) {
 		for (int i = 0; i < M.length; i++) {
 			String l = "";
-			for (int j = 0; j < M.length; j++) {
+			for (int j = 0; j < M[0].length; j++) {
 				l += M[i][j]+"\t";
 			}
 			System.out.println(l);
@@ -186,7 +198,7 @@ public class HITSExample {
 			sum += result[i];
 			System.out.println(names[i]+" "+result[i]);
 		}
-		System.out.println("Sum "+sum);
+		System.out.println("\t\tSum "+sum);
 	}
 
 }

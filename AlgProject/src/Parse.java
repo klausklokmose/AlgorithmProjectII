@@ -61,6 +61,7 @@ public class Parse {
 			// System.out.println(str);
 			// }
 			System.out.println(" Run time of parsing: "+(System.currentTimeMillis()-start)/1000+" sec");
+			System.out.println(l.get(0).size());
 		} finally {
 			scan.close();
 		}
