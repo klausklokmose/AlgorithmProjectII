@@ -1,20 +1,36 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Arrays;
+import java.util.Scanner;
+import java.util.concurrent.BrokenBarrierException;
 
 
 public class HITSExample {
 
-	static String[] names = {"K", "A", "B", "C"};
+	static String[] names = new String[300];
+//	static String[] names = {"K", "A", "B", "C"};
 //	static String[] names = {"M1", "M2", "A", "B", "C"};
-	static boolean printIterations = true;
+	static boolean printIterations = false;
 	static int iterations = 1000;
 	static double epsilon= 0.000000001d;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args)  throws FileNotFoundException, InterruptedException, BrokenBarrierException{
 
-		double[][] L = {{0, 1, 1, 0},
-						{1, 0, 1, 0},
-						{1, 1, 0, 1},
-						{0, 0, 1, 0}};
+		File f = new File("matrix.txt");
+		BufferedReader br = new BufferedReader(new FileReader(f));
+		Scanner scan = null;	
+		int NumberOfActors = 278;
+
+		try{
+		scan = new Scanner(br);
+		double[][] L = populateMatrix(scan, NumberOfActors);
+		
+//		double[][] L = {{0, 1, 1, 0},
+//						{1, 0, 1, 0},
+//						{1, 1, 0, 1},
+//						{0, 0, 1, 0}};
 //		double[][] L = {{0, 0, 1, 1, 0},
 //				{0, 0, 0, 1, 1},
 //				{0,0,0,0,0},
@@ -26,13 +42,26 @@ public class HITSExample {
 //		printMatrix(Lt);
 		double[][] Lt = L.clone(); //because it is symmetric
 		
-		double[] h = {1, 1, 1, 1};
+//		double[] h = {1, 1, 1, 1};
+		double[] h = new double[NumberOfActors];
+		for (int i = 0; i < h.length; i++) {
+			h[i]=1.0;
+		}
 //		double[] h = {1, 1, 1, 1, 1};
 		double[] a = new double[h.length];
-		double[] delta = {1, 1, 1, 1};
-//		double[] delta = {1, 1, 1, 1, 1};
+//		double[] delta = {1, 1, 1, 1};
+		
+		double[] delta = new double[NumberOfActors];
+		for (int i = 0; i < h.length; i++) {
+			h[i]=1.0;
+		}
+		
+		//		double[] delta = {1, 1, 1, 1, 1};
 		double c = 0.5d;
-		double[] U = {1, 0,0,0}; //bacon
+//		double[] U = {1, 0,0,0}; //bacon
+		double[] U = new double[NumberOfActors];
+		U[4]=1;
+		
 //		double[] U = {1, 1, 1, 1, 1};
 		double[] cU = multiplyVectorByNumber(U, c);
 		int count = 1;
@@ -48,6 +77,10 @@ public class HITSExample {
 			System.out.println("Rank: Hub");
 			printIteration(h, count++);
 	    }while (!vectorSmallerThan(delta,epsilon));
+		printVector(a);
+		}finally{
+			
+		}
 	}
 
 		private static double[] vectorAbsoluteSubtract(double[] v1,
@@ -67,6 +100,23 @@ public class HITSExample {
 	}
         return result;
     }
+	
+	private static double[][] populateMatrix(Scanner in,int NumberOfActors){
+		String line = "";
+		double[][] matrix = new double[NumberOfActors][NumberOfActors];
+		
+		while (in.hasNextLine()) {
+			line = in.nextLine();
+	    	String[] s = line.split(" ");
+		    
+	    	for (int j = 0; j < matrix.length; j++) {
+		        for (int i = 0; i < s.length; i++) {
+		            matrix[j][i] = Double.parseDouble(s[i]);
+		        }
+		    }    	
+		}
+		return matrix;
+	}
 	
 	private static double[][] matrixMultiplication(double[][] A,double[][] B)
 	{
