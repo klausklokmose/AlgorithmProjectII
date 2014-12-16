@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.BrokenBarrierException;
@@ -21,10 +22,25 @@ public class HITSExample {
 		File f = new File("matrix.txt");
 		BufferedReader br = new BufferedReader(new FileReader(f));
 		Scanner scan = null;	
-		int NumberOfActors = 278;
-
+		int NumberOfActors = 0;
+		
 		try{
 		scan = new Scanner(br);
+
+		//get the actors IDs and the number of actors 
+		if (scan.hasNextLine()) {
+			String line = scan.nextLine().trim();
+	    	String[] s = line.split(" ");
+	    	NumberOfActors = s.length;
+	    	names = new String[NumberOfActors];
+
+	    	for (int i = 0; i < s.length; i++) {
+				names[i] = s[i];
+			}
+		}
+		
+		
+		
 		double[][] L = populateMatrix(scan, NumberOfActors);
 		
 //		double[][] L = {{0, 1, 1, 0},
@@ -106,7 +122,7 @@ public class HITSExample {
 		double[][] matrix = new double[NumberOfActors][NumberOfActors];
 		
 		while (in.hasNextLine()) {
-			line = in.nextLine();
+			line = in.nextLine().trim();
 	    	String[] s = line.split(" ");
 		    
 	    	for (int j = 0; j < matrix.length; j++) {

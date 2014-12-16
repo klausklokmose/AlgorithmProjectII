@@ -24,15 +24,28 @@ public class MatrixExample {
 		File f = new File("matrix.txt");
 		BufferedReader br = new BufferedReader(new FileReader(f));
 		Scanner scan = null;
-		int NumberOfActors = 278;
+		int NumberOfActors = 0;
+		String[] names = new String[300];
+		
+		ArrayList<Integer> actorsID = new ArrayList<>();
 		try{
 			scan = new Scanner(br);
-			double[][] M = populateMatrix(scan,NumberOfActors);
-			String[] names = new String[NumberOfActors];
-			for (int i = 0; i < names.length; i++) {
-				names[i]=String.valueOf(i);
+
+			//get the actors IDs and the number of actors 
+			if (scan.hasNextLine()) {
+				String line = scan.nextLine().trim();
+		    	String[] s = line.split(" ");
+		    	NumberOfActors = s.length;
+		    	names = new String[NumberOfActors];
+		    	
+		    	for (int i = 0; i < s.length; i++) {
+					names[i] = s[i];
+				}
 			}
+			
+			double[][] M = populateMatrix(scan,NumberOfActors);
 		
+			
 //		double[][] M = {{0, 1/2d, 1/3d, 0},
 //						{1/2d, 0, 1/3d, 0},
 //						{1/2d, 1/2d, 0, 1},
@@ -105,7 +118,7 @@ public class MatrixExample {
 		double[][] matrix = new double[NumberOfActors][NumberOfActors];
 		
 		while (in.hasNextLine()) {
-			line = in.nextLine();
+			line = in.nextLine().trim();
 	    	String[] s = line.split(" ");
 		    
 	    	for (int j = 0; j < matrix.length; j++) {

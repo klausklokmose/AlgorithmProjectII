@@ -24,9 +24,9 @@ public class Parse {
 
 			populateArray(scan);
 			
-			System.out.println(" Run time of parsing: "+(System.currentTimeMillis()-start)/1000+" sec");
+//			System.out.println(" Run time of parsing: "+(System.currentTimeMillis()-start)/1000+" sec");
 			for (int i = 0; i < l.size(); i++) {
-				System.out.println(l.get(i).size()); 
+//				System.out.println(l.get(i).size()); 
 			}
 			
 			ArrayList<Movie> movies = new ArrayList<>();
@@ -34,19 +34,20 @@ public class Parse {
 			//find the movies we want to look at
 			
 			movies.add(movs.get(18979));  //Apollo 13
-			System.out.println("Added movie: "+18979);
+//			System.out.println("Added movie: "+18979);
 			movies.add(movs.get(117874)); //forest gump
-			System.out.println("Added movie: "+117874);
+//			System.out.println("Added movie: "+117874);
 			movies.add(movs.get(134077)); //the green mile
-			System.out.println("Added movie: "+134077);
+//			System.out.println("Added movie: "+134077);
 			
 			//print cast of movies
-			for (int i = 0; i < movies.size(); i++) {
-				System.out.println("MOVIE: "+movies.get(i).getTitle()+" ----- "+ movies.get(i).getCast().size()+ " --------------------------------");
-				for (int j = 0; j < movies.get(i).getCast().size(); j++) {
-					System.out.println(movies.get(i).getCast().get(j));
-				}
-			}
+//			for (int i = 0; i < movies.size(); i++) {
+//				System.out.println("MOVIE: "+movies.get(i).getTitle()+" ----- "+ movies.get(i).getCast().size()+ " --------------------------------");
+//				for (int j = 0; j < movies.get(i).getCast().size(); j++) {
+//					System.out.println(movies.get(i).getCast().get(j));
+//				}
+//			}
+			
 			ArrayList<Actor> actors = new ArrayList<>();
 			
 			for (int i = 0; i < movies.size(); i++) {
@@ -58,6 +59,7 @@ public class Parse {
 			
 			//TODO union actors list
 			
+			ArrayList<Integer> actorsID = new ArrayList<>();
 			double[][] M = new double[actors.size()][actors.size()];
 			for (int j = 0; j < M.length; j++) {
 				Actor a = actors.get(j);
@@ -68,13 +70,24 @@ public class Parse {
 //						System.out.println("actor "+a.getId()+" has played with "+actors.get(i).getId());
 					}
 				}
+				actorsID.add(a.getId());
 			}
+			
+			//print actorID's
+			for (int i = 0; i < actorsID.size(); i++) {
+				System.out.print(actorsID.get(i)+" ");				
+			}
+
+			System.out.println();
+			
+			//print matrix
 			for (int i = 0; i < M.length; i++) {
 				for (int j = 0; j < M.length; j++) {
 					System.out.print(M[i][j]+" ");
 				}
 				System.out.println();
 			}
+			
 		} finally {
 			scan.close();
 		}
