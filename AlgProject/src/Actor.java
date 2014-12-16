@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
-
-public class Actor extends IMDBobject{
+public class Actor extends IMDBobject {
 	final private int id;
+
 	public int getId() {
 		return id;
 	}
@@ -27,26 +27,28 @@ public class Actor extends IMDBobject{
 	private String lName;
 	private char gender;
 	private int numMovies;
-	private ArrayList<Integer> actors = new ArrayList<>();
-	
-	public ArrayList<Integer> getActorsPlayedWith(){
+	private ArrayList<Integer> actors;
+
+	public ArrayList<Integer> getActorsPlayedWith() {
 		return actors;
 	}
-	
-	public int getActorsSize(){
+
+	public int getActorsSize() {
 		return actors.size();
 	}
-	public Actor(int id, ArrayList<Integer> actors){
+
+	public Actor(int id, ArrayList<Integer> actors1) {
 		this.id = id;
-		this.actors = actors;
-//		for (int i = 0; i < actors.size(); i++) {
-//			if(actors.get(i)==id){
-//				actors.remove(i);
-//			}
-//		}
+		this.actors = new ArrayList<Integer>();
+		this.actors = (ArrayList<Integer>) actors1.clone();
+
+		int indexToRemove = actors.indexOf(id);
+		if(indexToRemove != -1){
+			this.actors.remove(indexToRemove);
+		}
 	}
-	
-	public Actor(int id, String lName, String fName, char gender, int numMovies){
+
+	public Actor(int id, String lName, String fName, char gender, int numMovies) {
 		this.id = id;
 		this.fName = fName;
 		this.lName = lName;
