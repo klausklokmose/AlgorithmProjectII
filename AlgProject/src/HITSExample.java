@@ -18,7 +18,7 @@ public class HITSExample {
 	public static void main(String[] args) throws FileNotFoundException,
 			InterruptedException, BrokenBarrierException {
 
-		File f = new File("matrix33movies.txt");
+		File f = new File("matrix11movies.txt");
 		BufferedReader br = new BufferedReader(new FileReader(f));
 		Scanner scan = null;
 		int NumberOfActors = 0;

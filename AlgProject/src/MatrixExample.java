@@ -18,7 +18,7 @@ public class MatrixExample {
 	static double[][] M = null;
 	
 	public static void main(String[] args)  throws FileNotFoundException, InterruptedException, BrokenBarrierException {
-		File f = new File("matrix33movies.txt");
+		File f = new File("matrix100movies.txt");
 		BufferedReader br = new BufferedReader(new FileReader(f));
 		Scanner scan = null;
 		int count  = 0;
@@ -67,10 +67,10 @@ public class MatrixExample {
 		
 		double[] E = new double[NumberOfActors];
 		for (int i = 0; i < names.length; i++) {
-//			if(names[i].equals(""+22591)){
-//				E[i] = Bacon;
-//			}
-			E[i] = (double)1/(double)NumberOfActors;
+			if(names[i].equals(""+22591)){
+				E[i] = Bacon;
+			}
+//			E[i] = (double)1/(double)NumberOfActors;
 		}
 		
 //		double[] E = {1, 0, 0, 0};
